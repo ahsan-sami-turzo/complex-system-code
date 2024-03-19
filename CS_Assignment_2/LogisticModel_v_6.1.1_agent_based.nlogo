@@ -65,13 +65,25 @@ end
 
 to expire
   let current-count count turtles
-  if energy-level <= 0 or age > max-age-slider
-  [
+  let eligible-to-die 0
+  if energy-level <= 0 or age > max-age-slider [
+    set eligible-to-die eligible-to-die + 1
     die
-    set died-count died-count + 1
   ]
-  set total-died total-died + died-count
+
+  set died-count died-count + eligible-to-die
+  set total-died total-died + eligible-to-die
 end
+
+;to expire
+;  let current-count count turtles
+;  if energy-level <= 0 or age > max-age-slider
+;  [
+;    die
+;    set died-count died-count + 1
+;  ]
+;  set total-died total-died + died-count
+;end
 
 to setup-plot
   set-current-plot "Population vs. Time"
@@ -206,7 +218,6 @@ false
 "" ""
 PENS
 "Population" 1.0 0 -16777216 true "" "plot count turtles"
-"Hatched" 1.0 0 -14333415 true "" "plot hatched-count"
 
 SLIDER
 14
@@ -222,24 +233,6 @@ birthrate
 1
 NIL
 HORIZONTAL
-
-PLOT
-737
-181
-1096
-341
-This year's pop. vs. last year's pop.
-Last year's pop.
-This year's pop. 
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"pen-0" 1.0 0 -7500403 true "" "plotxy last-count count turtles"
 
 SLIDER
 14
