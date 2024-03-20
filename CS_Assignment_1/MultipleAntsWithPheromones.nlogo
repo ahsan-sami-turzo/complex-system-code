@@ -12,6 +12,7 @@ turtles-own [
 globals [
   list-population
   list-ticks
+  ticks-to-finish-food
 ]
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -25,6 +26,7 @@ to setup
   setup-patches
   setup-turtles
   reset-ticks
+  set ticks-to-finish-food 0
 end
 
 to setup-turtles
@@ -96,7 +98,10 @@ end
 ;;;;;;;;;;;;;;;;;;;;;
 
 to go  ;; forever button
-  if all? patches [food = 0] and all? turtles [not carrying-food?] and all? patches [pheromone = 0] [stop]
+  if all? patches [food = 0] and all? turtles [not carrying-food?] and all? patches [pheromone = 0] [
+    set ticks-to-finish-food ticks
+    stop
+  ]
   ask turtles [
     move
     recolor
@@ -242,9 +247,9 @@ TEXTBOX
 17
 8
 136
-52
-Multiple Ants
-18
+96
+Multiple Ants with Pheromones mechanism
+12
 95.0
 1
 
@@ -674,6 +679,34 @@ NetLogo 6.4.0
     </enumeratedValueSet>
     <enumeratedValueSet variable="population">
       <value value="50"/>
+      <value value="100"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="ants-with-pheromones-2" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>ticks-to-finish-food</metric>
+    <enumeratedValueSet variable="max-step-size">
+      <value value="4"/>
+      <value value="8"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="evaporation-rate">
+      <value value="10"/>
+      <value value="10"/>
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="population">
+      <value value="50"/>
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="60"/>
+      <value value="60"/>
+      <value value="120"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="diffusion-rate">
+      <value value="10"/>
+      <value value="10"/>
       <value value="100"/>
     </enumeratedValueSet>
   </experiment>
