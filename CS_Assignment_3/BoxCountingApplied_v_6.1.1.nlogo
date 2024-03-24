@@ -59,6 +59,7 @@ end
 
 
 to bcd-go
+  if iteration >= 15 [stop]
   set len initial-box-length
   bcd-begin
 end
@@ -82,10 +83,10 @@ to bcd-begin
   set new-box-count 1    ;eliminates an error for first round
   make-initial-box
   make-neighbors-count-patches
-
 end
 
 to setup-bcd
+  set iteration 0
   set box-size initial-box-length
   make-initial-box
 end
@@ -556,7 +557,7 @@ initial-box-length
 initial-box-length
 1
 10
-1.0
+10.0
 1
 1
 NIL
@@ -630,7 +631,6 @@ If you use this model, please cite it as: Applied Box Counting model, Complexity
 Copyright 2016 Santa Fe Institute.
 
 This model is licensed by the Creative Commons Attribution-NonCommercial-ShareAlike International (http://creativecommons.org/licenses/). This states that you may copy, distribute, and transmit the work under the condition that you give attribution to ComplexityExplorer.org, and your use is for non-commercial purposes.
-
 
 @#$#@#$#@
 default
@@ -917,7 +917,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.4.0
 @#$#@#$#@
 ballSetup
 repeat 14 [ go ]

@@ -192,7 +192,7 @@ end
 
 to box-counting-setup
     set box-size initial-box-length
-    set iteration iteration
+    set iteration 0
     make-initial-box
 end
 
@@ -210,7 +210,7 @@ to box-counting-go
     set new-box-count 1    ;eliminates an error for first round
     make-initial-box
     make-neighbors-count-patches
-
+  if iteration >= 15 [stop]
 end
 
  ;makes a starter box at the beginning of each run with present? = true.
@@ -622,7 +622,7 @@ initial-box-length
 initial-box-length
 .2
 100
-4.0
+5.0
 .1
 1
 NIL
@@ -1124,7 +1124,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.4.0
 @#$#@#$#@
 ballSetup
 repeat 14 [ go ]
