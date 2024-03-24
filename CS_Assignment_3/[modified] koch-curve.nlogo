@@ -1,20 +1,11 @@
-;; We use the built-in turtle variable SIZE to make the line
-;; segment have the appropriate length.  Because the "segment"
-;; shape extends from the center of the turtle to its edge,
-;; rather than from edge to edge, we need to set the size
-;; to twice the segment length in order for the turtles to
-;; appear the right size.  This is why we multiple or divide
-;; by two in several places in the following code.
-
 to setup
   clear-all
   set-default-shape turtles "segment"
-  create-turtles 1
-    [ setxy min-pxcor       ;; start turtle in lower left corner
-            min-pycor + 10
-      set heading 90                ;; facing right
+  create-turtles 1 [
+    setxy min-pxcor + 50 max-pycor - 30
+      set heading 90
       set color green
-      set size (world-width * 2) ]
+      set size (world-width) ]
   reset-ticks
 end
 
@@ -25,26 +16,31 @@ end
 
 to iterate
   set size size / 3
-  repeat 5 [
-    hatch 1
-    fd size / 2
-    lt 60
-  ]
+  hatch 1
+  fd size / 3
+  lt 60
+  hatch 1
+  fd size / 3
   rt 120
+  hatch 1
+  fd size / 3
+  lt 60
+  hatch 1
+  fd size / 3
+  rt 120
+  hatch 1
+  fd size / 3
+  lt 60
 end
-
-
-; Copyright 1998 Uri Wilensky.
-; See Info tab for full copyright and license.
 @#$#@#$#@
 GRAPHICS-WINDOW
-215
-10
-919
-279
+13
+155
+912
+498
 -1
 -1
-2.8642
+3.67033
 1
 10
 1

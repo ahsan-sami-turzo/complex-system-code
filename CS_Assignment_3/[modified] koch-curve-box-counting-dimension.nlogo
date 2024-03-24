@@ -307,6 +307,33 @@ end
 to d
   ask turtles with [not new?] [die]
 end
+
+to linear-regression
+
+  if (count boxes >= 1) and (length x-axis-list > 1) [  ; eliminates potential error message if setup is pressed during a box-counting procedure
+                                                        ; or if there is only one point in the log-log plot
+
+    let regression matrix:regress matrix:from-column-list (list y-axis-list  x-axis-list)   ;using the regression tool from the matrix extension
+    ;setting y-intercept and slope (measure of goodness of fit)
+    let y-intercept item 0 (item 0 regression)
+    set slope item 1 (item 0 regression)
+    set r-square item 0 (item 1 regression)
+
+
+    ; set the equation to the appropriate string
+    set lin-reg-eq (word (precision slope 2) " * x + " (precision y-intercept 2))
+
+    ;plotting the line on the log-log plot
+    set-current-plot "Box Counting Plot"
+    set-current-plot-pen "pen-4"
+    plot-pen-reset
+    auto-plot-off
+    plotxy plot-x-min (plot-x-min * slope + y-intercept)
+    plot-pen-down
+    plotxy plot-x-max (plot-x-max * slope + y-intercept)
+    plot-pen-up
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 270
@@ -372,7 +399,7 @@ BUTTON
 311
 Box Counting Go
 box-counting-go
-NIL
+T
 1
 T
 OBSERVER
@@ -481,7 +508,7 @@ initial-box-length
 initial-box-length
 .2
 100
-5.9
+4.0
 .1
 1
 NIL
@@ -496,7 +523,7 @@ increment
 increment
 0
 1
-0.2
+0.8
 .1
 1
 NIL
@@ -578,6 +605,23 @@ lin-reg-eq
 17
 1
 11
+
+BUTTON
+820
+363
+944
+396
+NIL
+linear-regression
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -904,6 +948,23 @@ ballSetup
 repeat 14 [ go ]
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="experiment" repetitions="1" runMetricsEveryStep="true">
+    <setup>box-counting-setup</setup>
+    <go>box-counting-go</go>
+    <metric>count boxes</metric>
+    <enumeratedValueSet variable="increment">
+      <value value="0.1"/>
+      <value value="0.1"/>
+      <value value="0.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-box-length">
+      <value value="5"/>
+      <value value="5"/>
+      <value value="20"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
