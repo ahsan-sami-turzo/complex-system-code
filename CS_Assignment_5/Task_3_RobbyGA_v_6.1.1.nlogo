@@ -19,9 +19,9 @@ breed [cans can]
 
 globals [
   can-density
-  can-reward
-  wall-penalty
-  pick-up-penalty
+  ;can-reward
+  ;wall-penalty
+  ;pick-up-penalty
   best-chromosome
   best-fitness
   step-counter ;; used for keeping track of Robby's movements in the trial
@@ -31,8 +31,8 @@ globals [
   max-fit
   x-offset       ; For placing individuals in world
   tournament-size ; Size of "tournament" used to choose each parent.
-  num-environments-for-fitness ; Number of environments for Robby to run in to calculate fitness
-  num-actions-per-environment; Number of actions Robby takes in each environment for calculating fitness
+  ;num-environments-for-fitness ; Number of environments for Robby to run in to calculate fitness
+  ;num-actions-per-environment; Number of actions Robby takes in each environment for calculating fitness
 ]
 
 ;;; setup procedures
@@ -81,15 +81,15 @@ end
 
 to initialize-globals
   set can-density 0.5
-  set wall-penalty 5
-  set can-reward 10
-  set pick-up-penalty 1
+  ;set wall-penalty 5
+  ;set can-reward 10
+  ;set pick-up-penalty 1
   set min-fit  -100; For display.  Any fitness less than min-fit is displayed at the same location as min-fit.
   set max-fit 500 ; (approximate) maximum possible fitness that an individual could obtain assuming approx. 50 cans per environment.
   set x-offset 0
   set tournament-size 15
-  set num-environments-for-fitness 20
-  set num-actions-per-environment 200
+  ;set num-environments-for-fitness 20
+  ;set num-actions-per-environment 100
 end
 
 ;; randomly distribute cans, one per patch
@@ -211,7 +211,7 @@ to create-next-generation ;[best-individual]
   ; The new population is created by crossover.  Each crossover creates two children.
   ; There are population-size/2 crossovers done.  (Population size is constrained to
   ; be even.)
-  let crossover-count population-size / 2
+  ;let crossover-count population-size / 2
 
   repeat crossover-count [
 
@@ -501,10 +501,10 @@ NIL
 1
 
 PLOT
-11
-357
-312
-557
+8
+586
+309
+786
 Best Fitness
 Generation
 Best Fitness
@@ -546,10 +546,10 @@ Speed up speed slider or turn off\nview updates for faster response.
 1
 
 BUTTON
-339
-481
-528
-514
+336
+710
+525
+743
 step thru best strategy
 run-trial-step
 NIL
@@ -595,40 +595,40 @@ NIL
 0
 
 TEXTBOX
-340
-374
-490
-392
+337
+603
+487
+621
 Low Fitness
 11
 18.0
 1
 
 TEXTBOX
-456
-374
-606
-392
+453
+603
+603
+621
 Medium Fitness
 11
 13.0
 1
 
 TEXTBOX
-588
-373
-738
-391
+585
+602
+735
+620
 High Fitness
 11
 10.0
 1
 
 BUTTON
-339
-442
-532
-475
+336
+671
+529
+704
 view Robby's Environment
 setup-robot-visuals
 NIL
@@ -642,30 +642,30 @@ NIL
 0
 
 TEXTBOX
-537
-487
-658
-518
+534
+716
+655
+747
 Watch Robby move\none step at a time.
 10
 0.0
 1
 
 TEXTBOX
-540
-424
-676
-476
+537
+653
+673
+705
 Setup and view Robby's\nenvironment by randomly\ndistributing cans\nthroughout the world.
 10
 0.0
 1
 
 TEXTBOX
-339
-393
-660
-435
+336
+622
+657
+664
 After running the GA,  watch Robby use\nthe best evolved strategy:
 14
 95.0
@@ -749,10 +749,10 @@ Run the GA:
 1
 
 BUTTON
-339
-524
-520
-557
+336
+753
+517
+786
 view strategies
 setup-individual-visuals
 NIL
@@ -766,14 +766,114 @@ NIL
 0
 
 TEXTBOX
-535
-530
-670
-558
+532
+759
+667
+787
 Return to a view of\nthe strategies.
 10
 0.0
 1
+
+SLIDER
+13
+350
+185
+383
+wall-penalty
+wall-penalty
+0
+100
+5.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+12
+395
+184
+428
+can-reward
+can-reward
+0
+100
+10.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+11
+439
+183
+472
+pick-up-penalty
+pick-up-penalty
+0
+100
+1.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+10
+481
+257
+514
+num-environments-for-fitness
+num-environments-for-fitness
+0
+100
+20.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+10
+523
+256
+556
+num-actions-per-environment
+num-actions-per-environment
+0
+400
+102.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+361
+471
+533
+504
+crossover-count
+crossover-count
+0
+500
+3.0
+1
+1
+NIL
+HORIZONTAL
+
+CHOOSER
+225
+354
+663
+399
+selection-method
+selection-method
+"Fitness-Proportionate Selection (with Roulette-Wheel sampling)" "Elitism" "Linear Rank Selection"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -1181,24 +1281,6 @@ NetLogo 6.4.0
 setup repeat 5 [ go ]
 @#$#@#$#@
 @#$#@#$#@
-<experiments>
-  <experiment name="vary_mutation_rate" repetitions="5" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>go-n-generations</go>
-    <metric>best-fitness</metric>
-    <enumeratedValueSet variable="number-of-generations">
-      <value value="200"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="mutation-rate">
-      <value value="0.05"/>
-      <value value="0.1"/>
-      <value value="0.01"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="population-size">
-      <value value="200"/>
-    </enumeratedValueSet>
-  </experiment>
-</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default

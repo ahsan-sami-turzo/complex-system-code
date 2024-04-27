@@ -16,6 +16,7 @@ breed [robots robot]
 robots-own [strategy]
 
 breed [cans can]
+breed [walls wall]
 
 globals [
   can-density
@@ -142,7 +143,16 @@ to-report action-number [action]
   if action = "pick-up-can" [ report 7 ]
 end
 
+to place-wall
+  if mouse-down? [
+    ask patch mouse-xcor mouse-ycor [
+      sprout-walls 1
+    ]
+  ]
+end
+
 to go
+  place-wall
   create-next-generation
   calculate-population-fitnesses
   let best-individual max-one-of individuals [fitness]
@@ -323,18 +333,39 @@ to-report state
   let east patch-at 1 0
   let south patch-at 0 -1
   let west patch-at -1 0
-  report (ifelse-value is-patch? north [ifelse-value any? cans-on north [81] [0]] [162]) +
-         (ifelse-value is-patch? east  [ifelse-value any? cans-on east  [27] [0]] [ 54]) +
-         (ifelse-value is-patch? south [ifelse-value any? cans-on south [ 9] [0]] [ 18]) +
-         (ifelse-value is-patch? west  [ifelse-value any? cans-on west  [ 3] [0]] [  6]) +
-         (ifelse-value any? cans-here  [ 1] [0])
+  report (ifelse-value is-patch? north [ifelse-value any? cans-on north [81] [ifelse-value any? walls-on north [162] [0]]] [243]) +
+         (ifelse-value is-patch? east  [ifelse-value any? cans-on east  [27] [ifelse-value any? walls-on east  [54] [0]]] [81]) +
+         (ifelse-value is-patch? south [ifelse-value any? cans-on south [ 9] [ifelse-value any? walls-on south [18] [0]]] [27]) +
+         (ifelse-value is-patch? west  [ifelse-value any? cans-on west  [ 3] [ifelse-value any? walls-on west  [ 6] [0]]] [ 9]) +
+         (ifelse-value any? cans-here  [ 1] [ifelse-value any? walls-here [ 2] [0]])
+end
+
+
+to move-north
+  set heading 0
+  ifelse can-move? 1 and not any? walls-on patch-ahead 1 [ fd 1 ] [ set label label - wall-penalty ]
+end
+
+to move-east
+  set heading 90
+  ifelse can-move? 1 and not any? walls-on patch-ahead 1 [ fd 1 ] [ set label label - wall-penalty ]
+end
+
+to move-south
+  set heading 180
+  ifelse can-move? 1 and not any? walls-on patch-ahead 1 [ fd 1 ] [ set label label - wall-penalty ]
+end
+
+to move-west
+  set heading 270
+  ifelse can-move? 1 and not any? walls-on patch-ahead 1 [ fd 1 ] [ set label label - wall-penalty ]
 end
 
 ;; Below are the definitions of Robby's seven basic actions
-to move-north  set heading   0  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
-to move-east   set heading  90  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
-to move-south  set heading 180  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
-to move-west   set heading 270  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
+;to move-north  set heading   0  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
+;to move-east   set heading  90  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
+;to move-south  set heading 180  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
+;to move-west   set heading 270  ifelse can-move? 1 [ fd 1 ] [ set label label - wall-penalty ]  end
 to move-random run one-of ["move-north" "move-south" "move-east" "move-west"] end
 to stay-put    end  ;; Do nothing
 
@@ -571,7 +602,7 @@ number-of-generations
 number-of-generations
 1
 1000
-200.0
+52.0
 1
 1
 NIL
